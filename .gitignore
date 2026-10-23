@@ -1,0 +1,6 @@
+*.dmg
+assets/extracted/
+research/decomp/
+research/ghidra-project/
+build/
+.DS_Store
