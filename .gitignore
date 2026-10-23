@@ -4,3 +4,14 @@ research/decomp/
 research/ghidra-project/
 build/
 .DS_Store
+research/*.log
+
+# Claude Code files (never push)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+
+# Working docs and research (local only; final docs go in README.md)
+docs/
+research/
+tools/
