@@ -5,6 +5,8 @@
 add_library (qtn_core STATIC
     src/Version.cpp
     src/backup/BackupStore.cpp
+    src/device/Allowlist.cpp
+    src/device/DeviceSession.cpp
     src/device/PortConnection.cpp
     src/device/SysexQueue.cpp)
 target_include_directories (qtn_core PUBLIC src)

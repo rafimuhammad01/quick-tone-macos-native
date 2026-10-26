@@ -4,7 +4,8 @@ add_executable (qtn_tests
     backup_test.cpp
     transport_test.cpp
     port_connection_test.cpp
-    sysex_queue_test.cpp)
+    sysex_queue_test.cpp
+    session_test.cpp)
 target_link_libraries (qtn_tests PRIVATE qtn_core Catch2::Catch2WithMain)
 target_compile_options (qtn_tests PRIVATE ${QTN_WARNING_FLAGS})
 
