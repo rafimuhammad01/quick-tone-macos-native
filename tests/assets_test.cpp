@@ -1,3 +1,4 @@
+#include "support/TempDir.h"
 #include "ui/laf/AssetLibrary.h"
 #include "ui/laf/AssetManifest.h"
 #include "ui/laf/Language.h"
@@ -9,27 +10,7 @@
 
 namespace
 {
-/** A fresh, empty folder per test case, deleted afterwards. */
-class TempDir
-{
-  public:
-    TempDir()
-        : folder (juce::File::getSpecialLocation (juce::File::tempDirectory)
-                      .getNonexistentChildFile ("qtn-assets-test", "", false))
-    {
-        REQUIRE (folder.createDirectory().wasOk());
-    }
-
-    ~TempDir() { folder.deleteRecursively(); }
-
-    TempDir (const TempDir&) = delete;
-    TempDir& operator= (const TempDir&) = delete;
-
-    const juce::File& path() const noexcept { return folder; }
-
-  private:
-    juce::File folder;
-};
+using qtn::test::TempDir;
 
 void writePng (const juce::File& file, int width, int height, juce::Colour colour)
 {
@@ -158,8 +139,8 @@ TEST_CASE ("manifest_rejects_missing_header")
 TEST_CASE ("loads_image_from_folder_by_name_and_by_index")
 {
     TempDir dir;
-    writePng (dir.path().getChildFile ("Knob.png"), 4, 3, juce::Colours::red);
-    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n7,Knob.png,1\n"), dir.path());
+    writePng (dir.get().getChildFile ("Knob.png"), 4, 3, juce::Colours::red);
+    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n7,Knob.png,1\n"), dir.get());
 
     const auto byName = library.image ("Knob.png");
     const auto byIndex = library.image (7);
@@ -173,9 +154,9 @@ TEST_CASE ("loads_image_from_folder_by_name_and_by_index")
 TEST_CASE ("missing_image_returns_placeholder")
 {
     TempDir dir;
-    writePng (dir.path().getChildFile ("Broken.png"), 2, 2, juce::Colours::red);
-    dir.path().getChildFile ("Garbage.png").replaceWithText ("not a png");
-    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Listed.png,10\n2,Garbage.png,9\n"), dir.path());
+    writePng (dir.get().getChildFile ("Broken.png"), 2, 2, juce::Colours::red);
+    dir.get().getChildFile ("Garbage.png").replaceWithText ("not a png");
+    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Listed.png,10\n2,Garbage.png,9\n"), dir.get());
 
     CHECK (isPlaceholder (library.image ("Unlisted.png"))); // not in the manifest
     CHECK (isPlaceholder (library.image (99)));             // index not in the manifest
@@ -202,9 +183,9 @@ TEST_CASE ("localised_image_name_uses_r5_suffixes")
 TEST_CASE ("localised_image_falls_back_to_english_for_thai")
 {
     TempDir dir;
-    writePng (dir.path().getChildFile ("Title.png"), 2, 2, juce::Colours::red);
-    writePng (dir.path().getChildFile ("Title_CN.png"), 3, 3, juce::Colours::blue);
-    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Title.png,1\n2,Title_CN.png,1\n"), dir.path());
+    writePng (dir.get().getChildFile ("Title.png"), 2, 2, juce::Colours::red);
+    writePng (dir.get().getChildFile ("Title_CN.png"), 3, 3, juce::Colours::blue);
+    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Title.png,1\n2,Title_CN.png,1\n"), dir.get());
 
     CHECK (library.image ("Title", qtn::Language::thai).getWidth() == 2);
     CHECK (library.image ("Title", qtn::Language::english).getWidth() == 2);
@@ -214,10 +195,10 @@ TEST_CASE ("localised_image_falls_back_to_english_for_thai")
 TEST_CASE ("open_reads_manifest_from_folder")
 {
     TempDir dir;
-    writePng (dir.path().getChildFile ("Knob.png"), 5, 5, juce::Colours::red);
-    dir.path().getChildFile (qtn::AssetLibrary::manifestFilename).replaceWithText ("index,filename,size\n3,Knob.png,1\n");
+    writePng (dir.get().getChildFile ("Knob.png"), 5, 5, juce::Colours::red);
+    dir.get().getChildFile (qtn::AssetLibrary::manifestFilename).replaceWithText ("index,filename,size\n3,Knob.png,1\n");
 
-    const auto library = qtn::AssetLibrary::open (dir.path());
+    const auto library = qtn::AssetLibrary::open (dir.get());
 
     REQUIRE (library != nullptr);
     CHECK (library->image (3).getWidth() == 5);
@@ -226,10 +207,10 @@ TEST_CASE ("open_reads_manifest_from_folder")
 TEST_CASE ("open_returns_null_for_missing_or_malformed_manifest")
 {
     TempDir dir;
-    CHECK (qtn::AssetLibrary::open (dir.path()) == nullptr);
+    CHECK (qtn::AssetLibrary::open (dir.get()) == nullptr);
 
-    dir.path().getChildFile (qtn::AssetLibrary::manifestFilename).replaceWithText ("index,filename,size\nx,Knob.png,1\n");
-    CHECK (qtn::AssetLibrary::open (dir.path()) == nullptr);
+    dir.get().getChildFile (qtn::AssetLibrary::manifestFilename).replaceWithText ("index,filename,size\nx,Knob.png,1\n");
+    CHECK (qtn::AssetLibrary::open (dir.get()) == nullptr);
 }
 
 // ---- fonts -----------------------------------------------------------------------------------
@@ -250,8 +231,8 @@ TEST_CASE ("font_file_for_language_follows_r5")
 TEST_CASE ("missing_font_falls_back_to_default_of_same_height")
 {
     TempDir dir;
-    dir.path().getChildFile ("Fake.ttf").replaceWithText ("not a font");
-    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Fake.ttf,10\n"), dir.path());
+    dir.get().getChildFile ("Fake.ttf").replaceWithText ("not a font");
+    qtn::AssetLibrary library (parseOrFail ("index,filename,size\n1,Fake.ttf,10\n"), dir.get());
 
     const auto unlisted = library.font ("Nope.ttf", 13.0f);
     const auto broken = library.font ("Fake.ttf", 12.0f);

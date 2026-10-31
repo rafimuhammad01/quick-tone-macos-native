@@ -18,7 +18,9 @@ AppController::AppController (Transport& t, Allowlist allowlist, juce::File back
         lastBackup = backups.front();
 
     // Fixed for this build: only Handshake and Read commands can pass the gate.
-    deviceSession.setPolicy (WritePolicy::ReadOnly);
+    // ReadOnly takes no scratch slot, so it is always accepted.
+    [[maybe_unused]] const bool policySet = deviceSession.setPolicy (WritePolicy::ReadOnly);
+    jassert (policySet);
 
     transport.onReceive = [this] (const Bytes& raw)
     { connector.handleMessage (raw); };

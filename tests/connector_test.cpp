@@ -6,6 +6,7 @@
 #include "model/PresetFile.h"
 #include "proto/Codec.h"
 #include "support/FakeTransport.h"
+#include "support/TempDir.h"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -25,44 +26,9 @@ using qtn::Command;
 using qtn::CommandKind;
 using qtn::SendResult;
 using qtn::test::FakeTransport;
+using qtn::test::TempDir;
 
 constexpr int totalRequests = 75; // version + globals + 72 presets + edit buffer (R3b §4)
-
-/** A fresh, empty folder per test case, deleted afterwards. */
-class TempDir
-{
-  public:
-    TempDir()
-        : folder (juce::File::getSpecialLocation (juce::File::tempDirectory)
-                      .getNonexistentChildFile ("qtn-connector-test", "", false))
-    {
-        REQUIRE (folder.createDirectory().wasOk());
-    }
-
-    ~TempDir()
-    {
-        if (locked)
-            fs::permissions (folder.getFullPathName().toStdString(), fs::perms::owner_all, fs::perm_options::replace);
-        folder.deleteRecursively();
-    }
-
-    TempDir (const TempDir&) = delete;
-    TempDir& operator= (const TempDir&) = delete;
-
-    [[nodiscard]] juce::File get() const { return folder; }
-
-    void makeUnwritable()
-    {
-        locked = true;
-        fs::permissions (folder.getFullPathName().toStdString(),
-                         fs::perms::owner_read | fs::perms::owner_exec,
-                         fs::perm_options::replace);
-    }
-
-  private:
-    juce::File folder;
-    bool locked = false;
-};
 
 /** A clock that only moves when told to. */
 struct FakeClock
@@ -221,7 +187,7 @@ struct Fixture
         sent; needs a connected transport (the session checks the connection first). */
     bool writesBlocked()
     {
-        session.setPolicy (qtn::WritePolicy::LiveEditsOnly);
+        REQUIRE (session.setPolicy (qtn::WritePolicy::LiveEditsOnly));
         session.setDryRun (true);
         const auto result = session.submit (liveEdit);
         session.setDryRun (false);

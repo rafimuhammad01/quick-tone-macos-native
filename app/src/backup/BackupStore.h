@@ -38,7 +38,8 @@ struct BackupResult
 
     A save whose content (slot numbers and per-slot SHA-256) equals the newest intact backup
     writes nothing and returns that backup. After a save that wrote a new backup, the newest
-    `keep` backups and the oldest one (the first ever taken) are kept; the rest are deleted.
+    `keep` backups, the oldest one (the first ever taken) and the one just written (which a clock
+    that went backwards can date before newer ones) are kept; the rest are deleted.
 */
 class BackupStore
 {
@@ -58,7 +59,7 @@ class BackupStore
 
   private:
     [[nodiscard]] bool holds (const juce::File& folder, const std::vector<PresetBlob>& presets) const;
-    void prune() const;
+    void prune (const juce::File& justSaved) const;
 
     juce::File root;
     int keep;

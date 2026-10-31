@@ -226,7 +226,7 @@ BackupResult BackupStore::save (const std::vector<PresetBlob>& presets, juce::Ti
         return {false, {}, "Could not rename " + partial.getFullPathName() + " to " + folder.getFileName()};
     }
 
-    prune();
+    prune (folder);
     return {true, folder, {}};
 }
 
@@ -266,11 +266,13 @@ std::vector<PresetBlob> BackupStore::load (const juce::File& folder) const
     return presets;
 }
 
-void BackupStore::prune() const
+void BackupStore::prune (const juce::File& justSaved) const
 {
-    // The oldest backup (the first one ever taken) is never deleted.
+    // The oldest backup (the first one ever taken) is never deleted, nor the one just written:
+    // when the clock went backwards it is dated before newer ones and may fall outside `keep`.
     const auto backups = list();
     for (size_t i = static_cast<size_t> (std::max (keep, 0)); i + 1 < backups.size(); ++i)
-        backups[i].deleteRecursively();
+        if (backups[i] != justSaved)
+            backups[i].deleteRecursively();
 }
 } // namespace qtn

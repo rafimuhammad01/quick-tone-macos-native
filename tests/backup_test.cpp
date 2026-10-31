@@ -1,50 +1,11 @@
 #include "backup/BackupStore.h"
+#include "support/TempDir.h"
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <filesystem>
-
 namespace
 {
-namespace fs = std::filesystem;
-
-/** A fresh, empty folder per test case, deleted afterwards. Folders made read-only with
-    makeUnwritable() get their permissions back first, so they can be deleted. */
-class TempDir
-{
-  public:
-    TempDir()
-        : folder (juce::File::getSpecialLocation (juce::File::tempDirectory)
-                      .getNonexistentChildFile ("qtn-backup-test", "", false))
-    {
-        REQUIRE (folder.createDirectory().wasOk());
-    }
-
-    ~TempDir()
-    {
-        for (const auto& locked : lockedFolders)
-            fs::permissions (locked.getFullPathName().toStdString(), fs::perms::owner_all, fs::perm_options::replace);
-
-        folder.deleteRecursively();
-    }
-
-    TempDir (const TempDir&) = delete;
-    TempDir& operator= (const TempDir&) = delete;
-
-    [[nodiscard]] juce::File get() const { return folder; }
-
-    void makeUnwritable (const juce::File& dir)
-    {
-        lockedFolders.push_back (dir);
-        fs::permissions (dir.getFullPathName().toStdString(),
-                         fs::perms::owner_read | fs::perms::owner_exec,
-                         fs::perm_options::replace);
-    }
-
-  private:
-    juce::File folder;
-    std::vector<juce::File> lockedFolders;
-};
+using qtn::test::TempDir;
 
 constexpr juce::int64 baseUtcMs = 1'792'846'800'000; // 2026-10-24T13:00:00.000Z
 
@@ -433,4 +394,28 @@ TEST_CASE ("prune_never_deletes_the_first_backup")
     CHECK (backups[0].getFileName() == nameAt (5, 4));
     CHECK (backups[1].getFileName() == nameAt (5, 3));
     CHECK (backups[2].getFileName() == nameAt (5, 0));
+}
+
+TEST_CASE ("prune_never_deletes_the_backup_just_saved")
+{
+    // The clock went backwards: 51 backups are dated after the new save, so by date the new
+    // backup falls outside the newest 50, but it is the one just written.
+    TempDir temp;
+    qtn::BackupStore store (temp.get());
+    REQUIRE (store.save (numberedPresets (0), at (0, 0)).ok); // the first backup
+    for (int i = 1; i <= 51; ++i)
+        REQUIRE (store.save (numberedPresets (i), at (30 + i / 60, i % 60)).ok);
+
+    const auto result = store.save (numberedPresets (1000), at (10, 0));
+
+    REQUIRE (result.ok);
+    CHECK (result.folder.getFileName() == nameAt (10, 0));
+    CHECK (result.folder.isDirectory());
+    checkSamePresets (store.load (result.folder), numberedPresets (1000));
+
+    const auto backups = store.list();
+    REQUIRE (backups.size() == 52); // the newest 50, the one just saved and the first
+    CHECK (backups[50] == result.folder);
+    CHECK (backups.back().getFileName() == nameAt (0, 0));
+    CHECK (! temp.get().getChildFile (nameAt (30, 1)).exists()); // the oldest future-dated one went
 }

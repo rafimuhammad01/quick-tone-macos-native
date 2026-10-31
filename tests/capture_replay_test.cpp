@@ -253,15 +253,20 @@ TEST_CASE ("shipped_allowlist_contains_only_verified_reads")
     FakeTransport transport;
     qtn::DeviceSession session (transport, shippedAllowlist());
     session.markBackupDone (true);
-    session.setPolicy (qtn::WritePolicy::Full);
+    REQUIRE (session.setPolicy (qtn::WritePolicy::Full));
+
+    // Hand-built, well-formed slot-3 write frames (R7ab §2a items 6 / 10, R7cd §4 item 5), so that
+    // only the allowlist refuses them.
+    Bytes saveArgs (1 + qtn::proto::presetSize, 0x00);
+    saveArgs[0] = 3;
 
     const std::vector<Command> refused{
         *qtn::proto::paramChangeCommand (11, 64),
         *qtn::proto::selectPresetCommand (3),
         *qtn::proto::globalChangeCommand (0x40, 100),
-        {"savePreset", CommandKind::SavePreset, 3, {0xF0, 0x00, 0xF7}},
-        {"renamePreset", CommandKind::RenamePreset, 3, {0xF0, 0x00, 0xF7}},
-        {"swapPreset", CommandKind::SwapPreset, 3, {0xF0, 0x00, 0xF7}},
+        {"savePreset", CommandKind::SavePreset, 3, qtn::proto::frame (0x0E, saveArgs)},
+        {"renamePreset", CommandKind::RenamePreset, 3, qtn::proto::frame (0x23, {3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})},
+        {"swapPreset", CommandKind::SwapPreset, 3, qtn::proto::frame (0x2C, {4, 3})},
         {"bulkWrite", CommandKind::BulkWrite, -1, {0xF0, 0x00, 0xF7}},
         {"irWrite", CommandKind::IRWrite, -1, {0xF0, 0x00, 0xF7}},
         {"irDelete", CommandKind::IRDelete, -1, {0xF0, 0x00, 0xF7}},

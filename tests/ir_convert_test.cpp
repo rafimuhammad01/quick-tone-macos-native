@@ -1,4 +1,5 @@
 #include "ir/IrConvert.h"
+#include "support/TempDir.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
@@ -17,6 +18,7 @@ using Catch::Matchers::WithinRel;
 using qtn::Bytes;
 using qtn::IrData;
 using qtn::IrError;
+using qtn::test::TempDir;
 
 /** A decaying two-tone signal: energy in the normalisation band, no silent bins. */
 std::vector<float> testSignal (size_t length)
@@ -108,9 +110,9 @@ Bytes pcm16Wav (int sampleRate, int channels, const std::vector<int16_t>& interl
     return out;
 }
 
-juce::File writeTemp (const Bytes& bytes, const char* suffix)
+juce::File writeTemp (const TempDir& dir, const Bytes& bytes, const char* name)
 {
-    auto file = juce::File::createTempFile (suffix);
+    auto file = dir.get().getChildFile (name);
     REQUIRE (file.replaceWithData (bytes.data(), bytes.size()));
     return file;
 }
@@ -228,7 +230,8 @@ TEST_CASE ("convert_file_matches_samples_path")
     const auto signal = testSignal (pcm.size());
     for (size_t i = 0; i < pcm.size(); ++i)
         pcm[i] = static_cast<int16_t> (std::lround (signal[i] * 32767.0f));
-    const auto file = writeTemp (pcm16Wav (48000, 1, pcm), ".wav");
+    const TempDir dir;
+    const auto file = writeTemp (dir, pcm16Wav (48000, 1, pcm), "ir.wav");
 
     std::vector<float> asFloat (pcm.size());
     for (size_t i = 0; i < pcm.size(); ++i)
@@ -237,15 +240,14 @@ TEST_CASE ("convert_file_matches_samples_path")
     const auto fromFile = requireIr (qtn::IrConvert::fromAudioFile (file));
     const auto fromSamples = requireIr (qtn::IrConvert::fromSamples (48000.0, 1, asFloat));
     CHECK (fromFile.toDeviceBytes() == fromSamples.toDeviceBytes());
-    file.deleteFile();
 }
 
 TEST_CASE ("convert_unreadable_file_is_error")
 {
-    const auto junk = writeTemp (Bytes (500, 0x5A), ".wav");
+    const TempDir dir;
+    const auto junk = writeTemp (dir, Bytes (500, 0x5A), "junk.wav");
     CHECK (std::holds_alternative<IrError> (qtn::IrConvert::fromAudioFile (junk)));
-    junk.deleteFile();
-    CHECK (std::holds_alternative<IrError> (qtn::IrConvert::fromAudioFile (juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("qtn-missing-ir.wav"))));
+    CHECK (std::holds_alternative<IrError> (qtn::IrConvert::fromAudioFile (dir.get().getChildFile ("missing-ir.wav"))));
 }
 
 // ---- export ----
