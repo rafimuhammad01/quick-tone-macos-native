@@ -30,7 +30,7 @@ class JuceMidiTransport final : public Transport,
     ~JuceMidiTransport() override;
 
     bool isConnected() const override;
-    bool send (const Bytes& sysex) override;
+    bool send (const Bytes& message) override;
 
   private:
     class Ports final : public MidiPorts
@@ -43,6 +43,7 @@ class JuceMidiTransport final : public Transport,
         bool open (const std::string& inputId, const std::string& outputId) override;
         void close() override;
         bool sendSysexPayload (std::span<const uint8_t> payload) override;
+        bool sendShortMessage (std::span<const uint8_t> message) override;
 
       private:
         juce::MidiInputCallback& callback;

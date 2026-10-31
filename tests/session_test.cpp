@@ -3,6 +3,8 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <vector>
+
 namespace
 {
 using qtn::Command;
@@ -15,7 +17,8 @@ using qtn::test::FakeTransport;
 qtn::Allowlist testAllowlist()
 {
     return qtn::Allowlist::fromJson (
-        R"(["handshake", "getOnePreset", "liveEdit", "savePreset", "renamePreset", "bulkWrite"])");
+        R"(["handshake", "getOnePreset", "liveEdit", "savePreset", "renamePreset", "bulkWrite",
+            "selectPreset", "globalChange"])");
 }
 
 /** A clock that only moves when told to. */
@@ -37,6 +40,10 @@ Command cmd (std::string name, CommandKind kind, int slot = -1)
 const Command readCmd = cmd ("getOnePreset", CommandKind::Read);
 const Command liveCmd = cmd ("liveEdit", CommandKind::LiveEdit);
 const Command bulkCmd = cmd ("bulkWrite", CommandKind::BulkWrite);
+
+// Short Control Change messages (R7ab §2d): preset select is a live edit, master volume a global.
+const Command ccSelectCmd{"selectPreset", CommandKind::LiveEdit, -1, {0xB0, 0x3C, 0x05}};
+const Command ccGlobalCmd{"globalChange", CommandKind::SystemWrite, -1, {0xB0, 0x40, 0x32}};
 
 /** A session with the backup already done, so only the policy decides. */
 struct Fixture
@@ -60,7 +67,7 @@ TEST_CASE ("readonly_allows_read")
     CHECK (f.session.submit (readCmd) == SendResult::Sent);
     CHECK (f.session.submit (cmd ("handshake", CommandKind::Handshake)) == SendResult::Sent);
     REQUIRE (f.transport.sent.size() == 2);
-    CHECK (f.transport.sent[0] == readCmd.sysex);
+    CHECK (f.transport.sent[0] == readCmd.bytes);
 }
 
 TEST_CASE ("readonly_blocks_live_edit")
@@ -262,4 +269,90 @@ TEST_CASE ("allowlist_empty_or_malformed_json_contains_nothing")
     const auto mixed = qtn::Allowlist::fromJson (R"([1, "liveEdit", null])");
     CHECK (mixed.contains ("liveEdit"));
     CHECK_FALSE (mixed.contains ("1"));
+}
+
+// ---- Short (Control Change) messages ----
+
+TEST_CASE ("cc_live_edit_blocked_in_readonly")
+{
+    Fixture f;
+    CHECK (f.session.submit (ccSelectCmd) == SendResult::BlockedByPolicy);
+    CHECK (f.transport.sent.empty());
+}
+
+TEST_CASE ("cc_live_edit_sent_in_live_edits_policy")
+{
+    Fixture f;
+    f.session.setPolicy (WritePolicy::LiveEditsOnly);
+    CHECK (f.session.submit (ccSelectCmd) == SendResult::Sent);
+    CHECK (f.transport.sent == std::vector<qtn::Bytes>{{0xB0, 0x3C, 0x05}});
+    REQUIRE (f.session.log().size() == 1);
+    CHECK (f.session.log()[0].cmd.bytes == qtn::Bytes{0xB0, 0x3C, 0x05});
+    CHECK (f.session.log()[0].result == SendResult::Sent);
+}
+
+TEST_CASE ("cc_global_requires_full_policy")
+{
+    Fixture f;
+    for (const auto p : {WritePolicy::ReadOnly, WritePolicy::LiveEditsOnly, WritePolicy::ScratchSlotOnly})
+    {
+        f.session.setPolicy (p, 7);
+        CHECK (f.session.submit (ccGlobalCmd) == SendResult::BlockedByPolicy);
+    }
+    CHECK (f.transport.sent.empty());
+
+    f.session.setPolicy (WritePolicy::Full);
+    CHECK (f.session.submit (ccGlobalCmd) == SendResult::Sent);
+    CHECK (f.transport.sent == std::vector<qtn::Bytes>{{0xB0, 0x40, 0x32}});
+}
+
+TEST_CASE ("cc_blocked_until_backup_done")
+{
+    FakeTransport transport;
+    FakeClock clock;
+    DeviceSession session (transport, testAllowlist(), clock.fn());
+    session.setPolicy (WritePolicy::Full);
+
+    CHECK (session.submit (ccSelectCmd) == SendResult::BackupMissing);
+    CHECK (session.submit (ccGlobalCmd) == SendResult::BackupMissing);
+    CHECK (transport.sent.empty());
+
+    session.markBackupDone (true);
+    CHECK (session.submit (ccSelectCmd) == SendResult::Sent);
+}
+
+TEST_CASE ("cc_not_allowlisted_rejected")
+{
+    Fixture f;
+    f.session.setPolicy (WritePolicy::Full);
+    const Command unlisted{"paramChange", CommandKind::LiveEdit, -1, {0xB0, 0x0B, 0x10}};
+    CHECK (f.session.submit (unlisted) == SendResult::NotAllowlisted);
+    CHECK (f.transport.sent.empty());
+}
+
+TEST_CASE ("session_rejects_malformed_bytes")
+{
+    Fixture f;
+    f.session.setPolicy (WritePolicy::Full);
+
+    const std::vector<qtn::Bytes> bad{{}, {0xB0, 0x3C}, {0xB0, 0x3C, 0x05, 0x00}, {0xB0, 0x3C, 0x80}, {0xF8}, {0xF0, 0x01}};
+    for (const auto& b : bad)
+        CHECK (f.session.submit ({"selectPreset", CommandKind::LiveEdit, -1, b}) == SendResult::Malformed);
+
+    // Malformed even in dry-run mode, and logged like every other submit.
+    f.session.setDryRun (true);
+    CHECK (f.session.submit ({"selectPreset", CommandKind::LiveEdit, -1, {0xB0}}) == SendResult::Malformed);
+    CHECK (f.transport.sent.empty());
+    CHECK (f.session.log().size() == bad.size() + 1);
+}
+
+TEST_CASE ("short_message_with_read_kind_rejected")
+{
+    // A CC changes pedal state, so it may never ride on the Read/Handshake exemption from the
+    // backup and policy checks.
+    FakeTransport transport;
+    DeviceSession session (transport, testAllowlist());
+    CHECK (session.submit ({"getOnePreset", CommandKind::Read, -1, {0xB0, 0x3C, 0x05}}) == SendResult::Malformed);
+    CHECK (session.submit ({"handshake", CommandKind::Handshake, -1, {0xB0, 0x3C, 0x05}}) == SendResult::Malformed);
+    CHECK (transport.sent.empty());
 }

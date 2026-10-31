@@ -32,10 +32,14 @@ class MidiPorts
 
     // Sends a sysex payload without the F0/F7 framing bytes.
     virtual bool sendSysexPayload (std::span<const uint8_t> payload) = 0;
+
+    // Sends one already-validated short channel message (2 or 3 bytes, status first).
+    virtual bool sendShortMessage (std::span<const uint8_t> message) = 0;
 };
 
-// Default port matcher until research R3 names the exact ports.
-[[nodiscard]] bool isMg300PortName (std::string_view name);
+// True if the CoreMIDI port name contains "NUX NME-300" (case-sensitive),
+// the name the first-gen MG-300 enumerates under.
+[[nodiscard]] bool isPedalPortName (std::string_view name);
 
 // Decides which ports to open and tracks the connection state.
 // Not thread-safe: call every method from one thread (the message thread).
@@ -55,9 +59,10 @@ class PortConnection
 
     [[nodiscard]] bool isConnected() const noexcept;
 
-    // Sends a complete sysex (F0, 7-bit data bytes, F7). Returns false if
-    // disconnected, malformed, or the port reports failure.
-    [[nodiscard]] bool send (std::span<const uint8_t> sysex);
+    // Sends a complete sysex (F0, 7-bit data bytes, F7) or one short channel
+    // message (see qtn::messageForm). Returns false if disconnected,
+    // malformed, or the port reports failure.
+    [[nodiscard]] bool send (std::span<const uint8_t> message);
 
     std::function<void (bool connected)> onConnectionChanged;
 

@@ -8,13 +8,14 @@
 
 namespace qtn
 {
-// Hand-off from the MIDI thread to the message thread.
+// Hand-off of incoming messages from the MIDI thread to the message thread.
 // push() is called on the MIDI thread, drain() on the message thread.
 class SysexQueue
 {
   public:
-    // Queues a copy if `raw` is one complete sysex (F0 ... F7); returns
-    // whether it was queued.
+    // Queues a copy if `raw` is one complete sysex (F0 ... F7) or one short
+    // channel message such as a CC (see qtn::messageForm); returns whether it
+    // was queued. Realtime bytes and fragments are dropped.
     bool push (std::span<const uint8_t> raw);
 
     // Removes and returns everything queued, oldest first.

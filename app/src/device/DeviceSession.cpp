@@ -1,5 +1,7 @@
 #include "device/DeviceSession.h"
 
+#include "device/MidiBytes.h"
+
 #include <utility>
 
 namespace qtn
@@ -53,6 +55,12 @@ void DeviceSession::markBackupDone (bool done) noexcept { backupDone = done; }
 
 SendResult DeviceSession::check (const Command& cmd) const
 {
+    // A short message (e.g. a CC) always changes pedal state, so it may never use the
+    // Read/Handshake exemption from the backup and policy checks.
+    const auto form = messageForm (cmd.bytes);
+    if (! form.has_value() || (*form == MessageForm::Short && isReadKind (cmd.kind)))
+        return SendResult::Malformed;
+
     if (! transport.isConnected())
         return SendResult::Disconnected;
 
@@ -76,7 +84,7 @@ SendResult DeviceSession::submit (const Command& cmd)
     auto result = check (cmd);
 
     // A failed send (the link dropped between the check and the send) is reported, never retried.
-    if (result == SendResult::Sent && ! transport.send (cmd.sysex))
+    if (result == SendResult::Sent && ! transport.send (cmd.bytes))
         result = SendResult::Disconnected;
 
     entries.push_back ({clock(), cmd, result});

@@ -1,27 +1,13 @@
 #include "device/PortConnection.h"
 
+#include "device/MidiBytes.h"
+
 #include <algorithm>
-#include <cctype>
-#include <optional>
 
 namespace qtn
 {
 namespace
 {
-constexpr uint8_t sysexStart = 0xF0;
-constexpr uint8_t sysexEnd = 0xF7;
-
-bool containsIgnoreCase (std::string_view haystack, std::string_view needle)
-{
-    const auto lower = [] (char c)
-    { return static_cast<char> (std::tolower (static_cast<unsigned char> (c))); };
-
-    const auto it = std::search (haystack.begin(), haystack.end(), needle.begin(), needle.end(),
-                                 [&] (char a, char b)
-                                 { return lower (a) == lower (b); });
-    return it != haystack.end();
-}
-
 const PortInfo* findFirstMatch (const std::vector<PortInfo>& ports,
                                 const PortConnection::NameMatcher& matcher)
 {
@@ -35,27 +21,14 @@ bool containsId (const std::vector<PortInfo>& ports, const std::string& id)
     return std::any_of (ports.begin(), ports.end(), [&] (const PortInfo& p)
                         { return p.identifier == id; });
 }
-
-// Returns the payload between F0 and F7, or nothing if `sysex` is not one
-// well-formed sysex message (all payload bytes must be 7-bit).
-std::optional<std::span<const uint8_t>> sysexPayload (std::span<const uint8_t> sysex)
-{
-    if (sysex.size() < 2 || sysex.front() != sysexStart || sysex.back() != sysexEnd)
-        return std::nullopt;
-
-    const auto payload = sysex.subspan (1, sysex.size() - 2);
-
-    if (std::any_of (payload.begin(), payload.end(), [] (uint8_t b)
-                     { return b >= 0x80; }))
-        return std::nullopt;
-
-    return payload;
-}
 } // namespace
 
-bool isMg300PortName (std::string_view name)
+bool isPedalPortName (std::string_view name)
 {
-    return containsIgnoreCase (name, "MG-300");
+    // Original QuickTone opens a port whose name contains "NUX NME-300"
+    // (juce::String::contains: case-sensitive substring); decomp
+    // juce__NUX_MIDI_IO/checkDeivceIfChanged@1005f3200 L128, L620.
+    return name.find ("NUX NME-300") != std::string_view::npos;
 }
 
 PortConnection::PortConnection (MidiPorts& p, NameMatcher m) : ports (p), matcher (std::move (m)) {}
@@ -101,16 +74,19 @@ bool PortConnection::isConnected() const noexcept
     return connected;
 }
 
-bool PortConnection::send (std::span<const uint8_t> sysex)
+bool PortConnection::send (std::span<const uint8_t> message)
 {
     if (! connected)
         return false;
 
-    const auto payload = sysexPayload (sysex);
+    const auto form = messageForm (message);
 
-    if (! payload.has_value())
-        return false;
+    if (form == MessageForm::SysEx)
+        return ports.sendSysexPayload (message.subspan (1, message.size() - 2));
 
-    return ports.sendSysexPayload (*payload);
+    if (form == MessageForm::Short)
+        return ports.sendShortMessage (message);
+
+    return false;
 }
 } // namespace qtn

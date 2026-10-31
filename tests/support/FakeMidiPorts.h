@@ -20,7 +20,8 @@ class FakeMidiPorts final : public MidiPorts
 
     std::vector<std::pair<std::string, std::string>> openCalls; // {inputId, outputId}
     int closeCount = 0;
-    std::vector<Bytes> sentPayloads;
+    std::vector<Bytes> sentPayloads;      // sysex, without F0/F7
+    std::vector<Bytes> sentShortMessages; // channel messages, as sent
 
     void plug (PortInfo in, PortInfo out)
     {
@@ -48,6 +49,12 @@ class FakeMidiPorts final : public MidiPorts
     bool sendSysexPayload (std::span<const uint8_t> payload) override
     {
         sentPayloads.emplace_back (payload.begin(), payload.end());
+        return sendSucceeds;
+    }
+
+    bool sendShortMessage (std::span<const uint8_t> message) override
+    {
+        sentShortMessages.emplace_back (message.begin(), message.end());
         return sendSucceeds;
     }
 };

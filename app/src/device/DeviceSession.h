@@ -27,12 +27,15 @@ enum class SendResult
     BlockedByPolicy,
     NotAllowlisted,
     Disconnected,
-    BackupMissing
+    BackupMissing,
+    Malformed // bytes are not one sysex or one channel message, or a short message is labelled Read/Handshake
 };
 
 /** The safety gate: the only code that calls Transport::send. Every submitted command is
-    checked (in this order) for a connection, the allowlist, a finished backup, the write
-    policy and dry-run mode, and is logged with its result. A failed send is never retried. */
+    checked (in this order) for well-formed bytes (one sysex, or one short channel message whose
+    kind is not Read/Handshake), a connection, the allowlist, a finished backup, the write
+    policy and dry-run mode, and is logged with its result. Short messages (CCs) go through the
+    same checks as sysex, by their CommandKind. A failed send is never retried. */
 class DeviceSession
 {
   public:

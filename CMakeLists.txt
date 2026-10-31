@@ -26,6 +26,11 @@ FetchContent_MakeAvailable (juce Catch2)
 # Warnings for the project's own targets only (not third-party code).
 set (QTN_WARNING_FLAGS -Wall -Wextra -Werror)
 
+# Folder made by R6 (tools/name_assets.py): names.csv, nme300.txt and named/<originalFilename>.
+# Kept out of the repository. The NME-300 files are copied into the app bundle at build time.
+set (QTN_ASSETS_DIR "${PROJECT_SOURCE_DIR}/assets/extracted" CACHE PATH "Extracted QuickTone assets (R6 output)")
+set (QTN_ASSET_MANIFEST "${PROJECT_BINARY_DIR}/asset-manifest.csv")
+
 add_subdirectory (app)
 
 enable_testing ()

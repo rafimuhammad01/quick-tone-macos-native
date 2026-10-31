@@ -63,6 +63,17 @@ bool JuceMidiTransport::Ports::sendSysexPayload (std::span<const uint8_t> payloa
     return true;
 }
 
+bool JuceMidiTransport::Ports::sendShortMessage (std::span<const uint8_t> message)
+{
+    if (output == nullptr)
+        return false;
+
+    // PortConnection has already validated `message` as one 2- or 3-byte channel message.
+    jassert (message.size() >= 2 && message.size() <= 3);
+    output->sendMessageNow (juce::MidiMessage (message.data(), static_cast<int> (message.size())));
+    return true;
+}
+
 JuceMidiTransport::JuceMidiTransport (Matcher matcher)
     : connection (ports, [m = std::move (matcher)] (const std::string& name)
                   { return m (juce::String::fromUTF8 (name.c_str())); })
@@ -95,13 +106,14 @@ bool JuceMidiTransport::isConnected() const
     return connection.isConnected();
 }
 
-bool JuceMidiTransport::send (const Bytes& sysex)
+bool JuceMidiTransport::send (const Bytes& message)
 {
     JUCE_ASSERT_MESSAGE_THREAD
-    return connection.send (sysex);
+    return connection.send (message);
 }
 
-// MIDI thread: copy into the queue and hand off.
+// MIDI thread: copy into the queue and hand off. The queue keeps complete sysex and short
+// channel messages (e.g. unsolicited CCs from the pedal, R3b §3b) as raw bytes.
 void JuceMidiTransport::handleIncomingMidiMessage (juce::MidiInput*, const juce::MidiMessage& message)
 {
     const std::span<const uint8_t> raw{message.getRawData(), static_cast<size_t> (message.getRawDataSize())};
@@ -113,8 +125,8 @@ void JuceMidiTransport::handleIncomingMidiMessage (juce::MidiInput*, const juce:
 // Message thread.
 void JuceMidiTransport::handleAsyncUpdate()
 {
-    for (const auto& sysex : incoming.drain())
+    for (const auto& message : incoming.drain())
         if (onReceive)
-            onReceive (sysex);
+            onReceive (message);
 }
 } // namespace qtn

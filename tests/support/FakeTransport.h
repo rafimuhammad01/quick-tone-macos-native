@@ -1,5 +1,6 @@
 #pragma once
 
+#include "device/MidiBytes.h"
 #include "device/Transport.h"
 
 #include <vector>
@@ -7,7 +8,8 @@
 namespace qtn::test
 {
 // In-memory Transport for tests. Starts connected (pass false to start
-// disconnected). send() records the bytes only while connected.
+// disconnected). send() records the bytes only while connected and only if they are one
+// sysex or one short channel message, like the real transport.
 class FakeTransport final : public Transport
 {
   public:
@@ -17,20 +19,20 @@ class FakeTransport final : public Transport
 
     bool isConnected() const override { return connected; }
 
-    bool send (const Bytes& sysex) override
+    bool send (const Bytes& message) override
     {
-        if (! connected)
+        if (! connected || ! messageForm (message).has_value())
             return false;
 
-        sent.push_back (sysex);
+        sent.push_back (message);
         return true;
     }
 
     // Simulates bytes arriving from the device.
-    void deliver (const Bytes& sysex)
+    void deliver (const Bytes& message)
     {
         if (onReceive)
-            onReceive (sysex);
+            onReceive (message);
     }
 
     // Simulates plug/unplug; fires onConnectionChanged only on a change.

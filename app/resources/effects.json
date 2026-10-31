@@ -1,0 +1,3978 @@
+{
+ "source": "QuickTone 2.4.12.27, NUX NME-300 path (ModelerConfig id 2); see research/R4-preset-model.md",
+ "notes": "effect id = value of preset byte slotIndex (and of CC slotIndex). param offset = preset byte; cc = live-edit CC (value = byte value). default -1 = not found in code (UNVERIFIED). min/max from json parameter1/parameter2. Toggle params use 0=off, 99=on (UserData+0x200/+0x208).",
+ "modules": [
+  {
+   "id": "CMP",
+   "slotIndex": 1,
+   "onOffCC": 1,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "RED COMP",
+     "listName": "1. RED COMP",
+     "params": [
+      {
+       "name": "OUTPUT",
+       "languageKey": "CMP_OUTPUT",
+       "index": 0,
+       "offset": 12,
+       "cc": 11,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "SENSITIVITY",
+       "languageKey": "CMP_SENSITIVITY",
+       "index": 1,
+       "offset": 13,
+       "cc": 12,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 11,
+   "paramCCs": [
+    11,
+    16
+   ]
+  },
+  {
+   "id": "EFX",
+   "slotIndex": 2,
+   "onOffCC": 2,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "DIST+",
+     "listName": "1. DIST+",
+     "params": [
+      {
+       "name": "OUTPUT",
+       "languageKey": "EFX_OUTPUT",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DISTORTION",
+       "languageKey": "EFX_DISTORTION",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "RC BST",
+     "listName": "2. RC BST",
+     "params": [
+      {
+       "name": "VOLUME",
+       "languageKey": "EFX_VOLUME",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "GAIN",
+       "languageKey": "EFX_GAIN",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "EFX_BASS",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREBLE",
+       "languageKey": "EFX_TREBLE",
+       "index": 3,
+       "offset": 22,
+       "cc": 20,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "AC BST",
+     "listName": "3. AC BST",
+     "params": [
+      {
+       "name": "VOLUME",
+       "languageKey": "EFX_VOLUME",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "GAIN",
+       "languageKey": "EFX_GAIN",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "EFX_BASS",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREBLE",
+       "languageKey": "EFX_TREBLE",
+       "index": 3,
+       "offset": 22,
+       "cc": 20,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "DIST UNO",
+     "listName": "4. DIST UNO",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DRIVE",
+       "languageKey": "EFX_DRIVE",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "T SCREAMER",
+     "listName": "5. T SCREAMER",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DRIVE",
+       "languageKey": "EFX_DRIVE",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "BLUES DRIVE",
+     "listName": "6. BLUES DRIVE",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "GAIN",
+       "languageKey": "EFX_GAIN",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "MORNING DRIVE",
+     "listName": "7. MORNING DRIVE",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DRIVE",
+       "languageKey": "EFX_DRIVE",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "MODERN DIST",
+     "listName": "8. MODERN DIST",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "FILTER",
+       "languageKey": "EFX_FILTER",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DISTORTION",
+       "languageKey": "EFX_DISTORTION",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "RED DIST",
+     "listName": "9. RED DIST",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DRIVE",
+       "languageKey": "EFX_DRIVE",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "CRUNCH",
+     "listName": "10. CRUNCH",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "GAIN",
+       "languageKey": "EFX_GAIN",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "MUF DIST",
+     "listName": "11. MUF DIST",
+     "params": [
+      {
+       "name": "LEVEL",
+       "languageKey": "EFX_LEVEL",
+       "index": 0,
+       "offset": 19,
+       "cc": 17,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "EFX_TONE",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "SUSTAIN",
+       "languageKey": "EFX_SUSTAIN",
+       "index": 2,
+       "offset": 21,
+       "cc": 19,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "PITCH BENDER",
+     "listName": "12. PITCH BENDER",
+     "params": [
+      {
+       "name": "EFX_SWITCH_2",
+       "languageKey": "EFX_SWITCH_2",
+       "index": 1,
+       "offset": 20,
+       "cc": 18,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "switch"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 18,
+   "paramCCs": [
+    17,
+    22
+   ]
+  },
+  {
+   "id": "AMP",
+   "slotIndex": 3,
+   "onOffCC": 3,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "JAZZ CLEAN",
+     "listName": "1. JAZZ CLEAN",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BRIGHT",
+       "languageKey": "AMP_BRIGHT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "toggle"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "DELUXE RVB",
+     "listName": "2. DELUXE RVB",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "BASS MATE",
+     "listName": "3. BASS MATE",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "TWEEDY",
+     "listName": "4. TWEEDY",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "AMP_TONE",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "TWIN RVB",
+     "listName": "5. TWIN RVB",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BRIGHT",
+       "languageKey": "AMP_BRIGHT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "toggle"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "HIWIRE",
+     "listName": "6. HIWIRE",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "CALI CRUNCH",
+     "listName": "7. CALI CRUNCH",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "CLASS A15",
+     "listName": "8. CLASS A15",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "CUT",
+       "languageKey": "AMP_CUT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "CLASS A30",
+     "listName": "9. CLASS A30",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "CUT",
+       "languageKey": "AMP_CUT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "PLEXI 100W",
+     "listName": "10. PLEXI 100W",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "PLEXI 45",
+     "listName": "11. PLEXI 45",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "BRIT 800",
+     "listName": "12. BRIT 800",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 13,
+     "name": "1987X 50W",
+     "listName": "13. 1987X 50W",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 14,
+     "name": "SLO 100",
+     "listName": "14. SLO 100",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "FRIEDMAN",
+     "listName": "15. FRIEDMAN",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "DUAL RECT",
+     "listName": "16. DUAL RECT",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 17,
+     "name": "DIE VH4",
+     "listName": "17. DIE VH4",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 18,
+     "name": "VIBRO KING",
+     "listName": "18. VIBRO KING",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BRIGHT",
+       "languageKey": "AMP_BRIGHT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "toggle"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 19,
+     "name": "BUDDA",
+     "listName": "19. BUDDA",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "CUT",
+       "languageKey": "AMP_CUT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 20,
+     "name": "MR.Z 38",
+     "listName": "20. MR.Z 38",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "CUT",
+       "languageKey": "AMP_CUT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 21,
+     "name": "SUPER RVB",
+     "listName": "21. SUPER RVB",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BRIGHT",
+       "languageKey": "AMP_BRIGHT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "toggle"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 22,
+     "name": "BRIT BLUES",
+     "listName": "22. BRIT BLUES",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 23,
+     "name": "MATCH D30",
+     "listName": "23. MATCH D30",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "CUT",
+       "languageKey": "AMP_CUT",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 24,
+     "name": "BRIT 2000",
+     "listName": "24. BRIT 2000",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 25,
+     "name": "UBER HIGAIN",
+     "listName": "25. UBER HIGAIN",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "PRES",
+       "languageKey": "AMP_PRES",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 40,
+     "name": "STAGEMAN",
+     "listName": "26. STAGEMAN",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 60,
+     "name": "MLD",
+     "listName": "27. MLD",
+     "params": [
+      {
+       "name": "GAIN",
+       "languageKey": "AMP_GAIN",
+       "index": 0,
+       "offset": 26,
+       "cc": 23,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "M.FREQ",
+       "languageKey": "AMP_M.FREQ",
+       "index": 1,
+       "offset": 27,
+       "cc": 24,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "AMP_LEVEL",
+       "index": 2,
+       "offset": 28,
+       "cc": 25,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BASS",
+       "languageKey": "AMP_BASS",
+       "index": 3,
+       "offset": 29,
+       "cc": 26,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIDDLE",
+       "languageKey": "AMP_MIDDLE",
+       "index": 4,
+       "offset": 30,
+       "cc": 27,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TREB",
+       "languageKey": "AMP_TREB",
+       "index": 5,
+       "offset": 31,
+       "cc": 28,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 25,
+   "paramCCs": [
+    23,
+    28
+   ]
+  },
+  {
+   "id": "EQ",
+   "slotIndex": 4,
+   "onOffCC": 4,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "6-BAND EQ",
+     "listName": "1. 6-BAND EQ",
+     "params": [
+      {
+       "name": "EQ_BAND_1",
+       "languageKey": "EQ_BAND_1",
+       "index": 0,
+       "offset": 33,
+       "cc": 29,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "EQ_BAND_2",
+       "languageKey": "EQ_BAND_2",
+       "index": 1,
+       "offset": 34,
+       "cc": 30,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "EQ_BAND_3",
+       "languageKey": "EQ_BAND_3",
+       "index": 2,
+       "offset": 35,
+       "cc": 31,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "EQ_BAND_4",
+       "languageKey": "EQ_BAND_4",
+       "index": 3,
+       "offset": 36,
+       "cc": 32,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "EQ_BAND_5",
+       "languageKey": "EQ_BAND_5",
+       "index": 4,
+       "offset": 37,
+       "cc": 33,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "EQ_BAND_6",
+       "languageKey": "EQ_BAND_6",
+       "index": 5,
+       "offset": 38,
+       "cc": 34,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 32,
+   "paramCCs": [
+    29,
+    34
+   ]
+  },
+  {
+   "id": "NR",
+   "slotIndex": 5,
+   "onOffCC": 5,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "NR",
+     "listName": "1. NR",
+     "params": [
+      {
+       "name": "SENS",
+       "languageKey": "GATE_SENS",
+       "index": 0,
+       "offset": 40,
+       "cc": 35,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DECAY",
+       "languageKey": "GATE_DECAY",
+       "index": 1,
+       "offset": 41,
+       "cc": 36,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 39,
+   "paramCCs": [
+    35,
+    40
+   ]
+  },
+  {
+   "id": "MOD",
+   "slotIndex": 6,
+   "onOffCC": 6,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "CE-1",
+     "listName": "1. CE-1",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "INTEN",
+       "languageKey": "MOD_INTEN",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "CLASSIC CHORUS",
+     "listName": "2. CLASSIC CHORUS",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "ST.CHORUS",
+     "listName": "3. ST.CHORUS",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "INTEN",
+       "languageKey": "MOD_INTEN",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "VIBRATO",
+     "listName": "4. VIBRATO",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "DETUNE",
+     "listName": "5. DETUNE",
+     "params": [
+      {
+       "name": "SHIFT-L",
+       "languageKey": "MOD_SHIFT-L",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "SHIFT-R",
+       "languageKey": "MOD_SHIFT-R",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIX",
+       "languageKey": "MOD_MIX",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "FLANGE",
+     "listName": "6. FLANGE",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "MOD_F.BACK",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "WIDTH",
+       "languageKey": "MOD_WIDTH",
+       "index": 3,
+       "offset": 50,
+       "cc": 44,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "PH 90",
+     "listName": "7. PH 90",
+     "params": [
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "PHASE 100",
+     "listName": "8. PHASE 100",
+     "params": [
+      {
+       "name": "INTEN",
+       "languageKey": "MOD_INTEN",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "CHORUS+",
+     "listName": "9. CHORUS+",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "INTEN",
+       "languageKey": "MOD_INTEN",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MOD_MODE",
+       "languageKey": "MOD_MODE",
+       "index": 3,
+       "offset": 50,
+       "cc": 44,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "plist-button"
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "U-VIBE",
+     "listName": "10. U-VIBE",
+     "params": [
+      {
+       "name": "INTEN",
+       "languageKey": "MOD_INTEN",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "SPEED",
+       "languageKey": "MOD_SPEED",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "VOLUME",
+       "languageKey": "MOD_VOLUME",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MOD_SWITCH_4",
+       "languageKey": "MOD_SWITCH_4",
+       "index": 3,
+       "offset": 50,
+       "cc": 44,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "footswitch"
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "TREM",
+     "listName": "11. TREM",
+     "params": [
+      {
+       "name": "DEPTH",
+       "languageKey": "MOD_DEPTH",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "RATE",
+       "languageKey": "MOD_RATE",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "RTY SPK",
+     "listName": "12. RTY SPK",
+     "params": [
+      {
+       "name": "BALANCE",
+       "languageKey": "MOD_BALANCE",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "SPEED",
+       "languageKey": "MOD_SPEED",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 13,
+     "name": "HARMONY",
+     "listName": "13. HARMONY",
+     "params": [
+      {
+       "name": "MOD_SWITCH_1",
+       "languageKey": "MOD_SWITCH_1",
+       "index": 0,
+       "offset": 47,
+       "cc": 41,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "switch"
+      },
+      {
+       "name": "MOD_KEY",
+       "languageKey": "MOD_KEY",
+       "index": 1,
+       "offset": 48,
+       "cc": 42,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "harmony-key-led"
+      },
+      {
+       "name": "HARMO",
+       "languageKey": "MOD_HARMO",
+       "index": 2,
+       "offset": 49,
+       "cc": 43,
+       "min": 0,
+       "max": 9,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "BALANCE",
+       "languageKey": "MOD_BALANCE",
+       "index": 3,
+       "offset": 50,
+       "cc": 44,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 46,
+   "paramCCs": [
+    41,
+    46
+   ]
+  },
+  {
+   "id": "DLY",
+   "slotIndex": 7,
+   "onOffCC": 7,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "ANALOG DELAY",
+     "listName": "1. ANALOG DELAY",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "ECHO",
+       "languageKey": "DLY_ECHO_MG300",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "INTENSITY",
+       "languageKey": "DLY_INTENSITY_MG300",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "DIGI DELAY",
+     "listName": "2. DIGI DELAY",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "DLY_F.BACK",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "DLY_LEVEL",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "MODULATE",
+     "listName": "3. MODULATE",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "DLY_F.BACK",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "DLY_LEVEL",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MOD",
+       "languageKey": "DLY_MOD",
+       "index": 3,
+       "offset": 57,
+       "cc": 50,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "TAPE ECHO",
+     "listName": "4. TAPE ECHO",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "DLY_F.BACK",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "LEVEL",
+       "languageKey": "DLY_LEVEL",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "REVERSE",
+     "listName": "5. REVERSE",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "DLY_F.BACK",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIX",
+       "languageKey": "DLY_MIX",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "PAN",
+     "listName": "6. PAN",
+     "params": [
+      {
+       "name": "TIME",
+       "languageKey": "DLY_TIME",
+       "index": 0,
+       "offset": 54,
+       "cc": 47,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "F.BACK",
+       "languageKey": "DLY_F.BACK",
+       "index": 1,
+       "offset": 55,
+       "cc": 48,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "MIX",
+       "languageKey": "DLY_MIX",
+       "index": 2,
+       "offset": 56,
+       "cc": 49,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 53,
+   "paramCCs": [
+    47,
+    52
+   ]
+  },
+  {
+   "id": "RVB",
+   "slotIndex": 8,
+   "onOffCC": 8,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "ROOM",
+     "listName": "1. ROOM",
+     "params": [
+      {
+       "name": "MIX",
+       "languageKey": "RVB_MIX",
+       "index": 0,
+       "offset": 61,
+       "cc": 53,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "TONE",
+       "languageKey": "RVB_TONE",
+       "index": 1,
+       "offset": 62,
+       "cc": 54,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DECAY",
+       "languageKey": "RVB_DECAY",
+       "index": 2,
+       "offset": 63,
+       "cc": 55,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "HALL",
+     "listName": "2. HALL",
+     "params": [
+      {
+       "name": "MIX",
+       "languageKey": "RVB_MIX",
+       "index": 0,
+       "offset": 61,
+       "cc": 53,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "DECAY",
+       "languageKey": "RVB_DECAY",
+       "index": 1,
+       "offset": 62,
+       "cc": 54,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "PRE.D",
+       "languageKey": "RVB_PRE.D",
+       "index": 2,
+       "offset": 63,
+       "cc": 55,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      },
+      {
+       "name": "LIVELINESS",
+       "languageKey": "RVB_LIVELINESS",
+       "index": 3,
+       "offset": 64,
+       "cc": 56,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "fader"
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "PLATE",
+     "listName": "3. PLATE",
+     "params": [
+      {
+       "name": "MIX",
+       "languageKey": "RVB_MIX",
+       "index": 0,
+       "offset": 61,
+       "cc": 53,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DECAY",
+       "languageKey": "RVB_DECAY",
+       "index": 1,
+       "offset": 62,
+       "cc": 54,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "SPRING",
+     "listName": "4. SPRING",
+     "params": [
+      {
+       "name": "MIX",
+       "languageKey": "RVB_MIX",
+       "index": 0,
+       "offset": 61,
+       "cc": 53,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      },
+      {
+       "name": "DECAY",
+       "languageKey": "RVB_DECAY",
+       "index": 1,
+       "offset": 62,
+       "cc": 54,
+       "min": 0,
+       "max": 99,
+       "default": -1,
+       "unit": "",
+       "control": "knob"
+      }
+     ]
+    }
+   ],
+   "blockOffset": 60,
+   "paramCCs": [
+    53,
+    58
+   ]
+  },
+  {
+   "id": "CAB",
+   "slotIndex": 9,
+   "onOffCC": 9,
+   "bypassValue": 0,
+   "effects": [
+    {
+     "id": 1,
+     "name": "JAZZ 212",
+     "listName": "1. JAZZ 212",
+     "params": []
+    },
+    {
+     "id": 2,
+     "name": "BLACK 112",
+     "listName": "2. BLACK 112",
+     "params": []
+    },
+    {
+     "id": 3,
+     "name": "TWEED 410",
+     "listName": "3. TWEED 410",
+     "params": []
+    },
+    {
+     "id": 4,
+     "name": "TWEED 112",
+     "listName": "4. TWEED 112",
+     "params": []
+    },
+    {
+     "id": 5,
+     "name": "TWIN 212",
+     "listName": "5. TWIN 212",
+     "params": []
+    },
+    {
+     "id": 6,
+     "name": "CUSTOM 412",
+     "listName": "6. CUSTOM 412",
+     "params": []
+    },
+    {
+     "id": 7,
+     "name": "CALI 112",
+     "listName": "7. CALI 112",
+     "params": []
+    },
+    {
+     "id": 8,
+     "name": "BLUE 112",
+     "listName": "8. BLUE 112",
+     "params": []
+    },
+    {
+     "id": 9,
+     "name": "BLUE 212",
+     "listName": "9. BLUE 212",
+     "params": []
+    },
+    {
+     "id": 10,
+     "name": "GREEN 412",
+     "listName": "10. GREEN 412",
+     "params": []
+    },
+    {
+     "id": 11,
+     "name": "G12L 412",
+     "listName": "11. G12L 412",
+     "params": []
+    },
+    {
+     "id": 12,
+     "name": "T75 412",
+     "listName": "12. T75 412",
+     "params": []
+    },
+    {
+     "id": 13,
+     "name": "V30 412",
+     "listName": "13. V30 412",
+     "params": []
+    },
+    {
+     "id": 14,
+     "name": "SLO 412",
+     "listName": "14. SLO 412",
+     "params": []
+    },
+    {
+     "id": 15,
+     "name": "HBE 412",
+     "listName": "15. HBE 412",
+     "params": []
+    },
+    {
+     "id": 16,
+     "name": "RECT 412",
+     "listName": "16. RECT 412",
+     "params": []
+    },
+    {
+     "id": 17,
+     "name": "BOTM 412",
+     "listName": "17. BOTM 412",
+     "params": []
+    },
+    {
+     "id": 18,
+     "name": "VIBRO 212",
+     "listName": "18. VIBRO 212",
+     "params": []
+    },
+    {
+     "id": 19,
+     "name": "EVL 112",
+     "listName": "19. EVL 112",
+     "params": []
+    },
+    {
+     "id": 20,
+     "name": "BUTQ 212",
+     "listName": "20. BUTQ 212",
+     "params": []
+    },
+    {
+     "id": 21,
+     "name": "SUPER 212",
+     "listName": "21. SUPER 212",
+     "params": []
+    },
+    {
+     "id": 22,
+     "name": "BRIT 212",
+     "listName": "22. BRIT 212",
+     "params": []
+    },
+    {
+     "id": 23,
+     "name": "DC 212",
+     "listName": "23. DC 212",
+     "params": []
+    },
+    {
+     "id": 24,
+     "name": "G12M 412",
+     "listName": "24. G12M 412",
+     "params": []
+    },
+    {
+     "id": 25,
+     "name": "UBER 412",
+     "listName": "25. UBER 412",
+     "params": []
+    },
+    {
+     "id": 40,
+     "name": "T814",
+     "listName": "26. T814",
+     "params": []
+    },
+    {
+     "id": 41,
+     "name": "M OM28",
+     "listName": "27. M OM28",
+     "params": []
+    },
+    {
+     "id": 60,
+     "name": "TRC 410",
+     "listName": "28. TRC 410",
+     "params": []
+    },
+    {
+     "id": 61,
+     "name": "DB 810",
+     "listName": "29. DB 810",
+     "params": []
+    },
+    {
+     "id": 62,
+     "name": "SV 810",
+     "listName": "30. SV 810",
+     "params": []
+    },
+    {
+     "id": 100,
+     "name": "USER",
+     "listName": "USER",
+     "params": []
+    }
+   ]
+  },
+  {
+   "id": "MIC",
+   "slotIndex": 10,
+   "onOffCC": 10,
+   "bypassValue": null,
+   "effects": [
+    {
+     "id": 1,
+     "name": "DYNAMIC E906",
+     "listName": "1. DYNAMIC E906",
+     "params": []
+    },
+    {
+     "id": 2,
+     "name": "DYNAMIC SM57",
+     "listName": "2. DYNAMIC SM57",
+     "params": []
+    },
+    {
+     "id": 3,
+     "name": "COND U87",
+     "listName": "3. COND U87",
+     "params": []
+    },
+    {
+     "id": 4,
+     "name": "COND C414",
+     "listName": "4. COND C414",
+     "params": []
+    }
+   ]
+  }
+ ],
+ "patchLevel": {
+  "offset": 102,
+  "cc": 74,
+  "min": 0,
+  "max": 99,
+  "default": -1
+ }
+}
