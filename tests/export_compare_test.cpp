@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iterator>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 namespace
@@ -69,6 +71,41 @@ std::vector<int> differentSlots (const qtn::ExportComparison& c)
     return out;
 }
 
+void putU32 (Bytes& out, uint32_t value)
+{
+    for (int shift = 0; shift < 32; shift += 8)
+        out.push_back (static_cast<uint8_t> (value >> shift));
+}
+
+/** A legacy all-presets file (102-byte presets, R4 §4) built by hand. */
+juce::File writeLegacyExport (const juce::File& folder, const std::vector<Bytes>& legacyPresets)
+{
+    Bytes data;
+    putU32 (data, 1);
+    putU32 (data, 0x66);
+    for (size_t slot = 0; slot < legacyPresets.size(); ++slot)
+    {
+        putU32 (data, 1);
+        putU32 (data, static_cast<uint32_t> (slot));
+        putU32 (data, 0x66);
+        data.push_back (0);
+        data.insert (data.end(), legacyPresets[slot].begin(), legacyPresets[slot].end());
+        data.insert (data.end(), 44 + 8192, 0x00);
+    }
+
+    constexpr std::string_view key = "MG300 Preset Data";
+    Bytes file;
+    putU32 (file, static_cast<uint32_t> (12 + key.size() + data.size()));
+    putU32 (file, static_cast<uint32_t> (key.size()));
+    file.insert (file.end(), key.begin(), key.end());
+    putU32 (file, static_cast<uint32_t> (data.size()));
+    file.insert (file.end(), data.begin(), data.end());
+
+    const auto out = folder.getChildFile ("MG300AllPresetLegacy.nuxpreset");
+    REQUIRE (out.replaceWithData (file.data(), file.size()));
+    return out;
+}
+
 Bytes readWholeFile (const std::string& path)
 {
     std::ifstream in (path, std::ios::binary);
@@ -100,8 +137,13 @@ TEST_CASE ("compare_lists_differing_slots")
     TempDir dir;
     const auto backup = saveBackup (dir.get().getChildFile ("backups"));
     auto records = exportRecords();
-    records[0].preset.raw[0x00] ^= 0x01; // unknown bytes: encode() keeps them
-    records[35].preset.raw[0x63] ^= 0x01;
+    // Unknown bytes: encode() keeps them.
+    for (const auto& [index, offset] : {std::pair{size_t{0}, size_t{0x00}}, std::pair{size_t{35}, size_t{0x63}}})
+    {
+        auto bytes = records[index].preset.encode();
+        bytes[offset] ^= 0x01;
+        records[index].preset = *qtn::Preset::decode (bytes);
+    }
     const auto file = writeExport (dir.get(), records);
 
     const auto result = qtn::compareWithExport (backup, file);
@@ -178,7 +220,7 @@ TEST_CASE ("compare_real_export_with_backup_built_from_it")
     // What a pedal read would store if the pedal holds exactly what QuickTone exported.
     std::vector<qtn::PresetBlob> blobs;
     for (const auto& record : parsed.contents->records)
-        blobs.push_back ({record.slot, "", Bytes (record.preset.raw.begin(), record.preset.raw.end())});
+        blobs.push_back ({record.slot, "", record.preset.encode()});
     for (int slot = 36; slot < 72; ++slot)
         blobs.push_back ({slot, "", presetBytes (slot)});
 
@@ -195,4 +237,37 @@ TEST_CASE ("compare_real_export_with_backup_built_from_it")
     const auto changed = store.save (blobs, juce::Time (2026, 9, 31, 12, 0, 1));
     REQUIRE (changed.ok);
     CHECK (differentSlots (qtn::compareWithExport (changed.folder, juce::File (juce::String (path)))) == std::vector<int>{parsed.contents->records[12].slot});
+}
+
+TEST_CASE ("compare_converted_legacy_export_has_no_false_difference")
+{
+    // Slot 2 holds the old USER cab 26, which the legacy conversion maps to 100 (R4 §4). The pedal
+    // holds the converted preset; the compare must use the converted bytes too.
+    constexpr size_t cabOffset = 0x09;
+    std::vector<Bytes> legacy;
+    std::vector<qtn::PresetBlob> blobs;
+    for (int slot = 0; slot < 36; ++slot)
+    {
+        auto converted = presetBytes (slot);
+        converted[0x66] = 50; // patch level the conversion appends
+        auto old = Bytes (converted.begin(), converted.end() - 1);
+        if (slot == 2)
+        {
+            old[cabOffset] = 26;
+            converted[cabOffset] = 100;
+        }
+        legacy.push_back (old);
+        blobs.push_back ({slot, "", converted});
+    }
+
+    TempDir dir;
+    qtn::BackupStore store (dir.get().getChildFile ("backups"));
+    const auto saved = store.save (blobs, juce::Time (2026, 9, 31, 12, 0, 0));
+    REQUIRE (saved.ok);
+    const auto file = writeLegacyExport (dir.get(), legacy);
+
+    const auto result = qtn::compareWithExport (saved.folder, file);
+
+    CHECK (result.error.isEmpty());
+    CHECK (differentSlots (result).empty());
 }

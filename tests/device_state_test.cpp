@@ -73,3 +73,17 @@ TEST_CASE ("device_state_clear_resets_and_notifies")
     CHECK (state.currentSlot() == -1);
     CHECK (changes == 1);
 }
+
+TEST_CASE ("device_state_edit_buffer_slot_out_of_range_is_unknown")
+{
+    qtn::DeviceState state;
+    state.setEditBuffer (presetFilledWith (2), 71);
+    CHECK (state.currentSlot() == 71);
+
+    state.setEditBuffer (presetFilledWith (3), 72);
+    CHECK (state.editBuffer().has_value());
+    CHECK (state.currentSlot() == -1);
+
+    state.setEditBuffer (presetFilledWith (3), -5);
+    CHECK (state.currentSlot() == -1);
+}

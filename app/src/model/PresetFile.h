@@ -68,6 +68,12 @@ inline constexpr size_t allPresetsRecordCount = 36;
 /** Parses a whole file. Any size, key or tag mismatch gives an error, never a crash. */
 [[nodiscard]] PresetFileReadResult read (std::span<const uint8_t> file);
 
+/** Checks parsed contents before an import. All-presets files (normal or legacy) must have each
+    slot 0-35 exactly once; a single-preset file is imported into a slot the user picks, so its
+    slot field is not checked. Returns the reason the contents cannot be imported, or
+    std::nullopt when they can. read() stays lenient so a compare can still report odd files. */
+[[nodiscard]] std::optional<std::string> validateForImport (const PresetFileContents& contents);
+
 /** A single-preset file; std::nullopt when the record's WAV header or IR area has the wrong size. */
 [[nodiscard]] std::optional<Bytes> writeSingle (const PresetRecord& record);
 

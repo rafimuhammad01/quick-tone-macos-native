@@ -1,4 +1,5 @@
 #include "device/DeviceSession.h"
+#include "proto/Codec.h"
 #include "support/FakeTransport.h"
 
 #include <catch2/catch_test_macros.hpp>
@@ -7,6 +8,7 @@
 
 namespace
 {
+using qtn::Bytes;
 using qtn::Command;
 using qtn::CommandKind;
 using qtn::DeviceSession;
@@ -32,8 +34,14 @@ struct FakeClock
     }
 };
 
+/** Read/Handshake commands carry a real read frame (the gate checks their bytes); every other
+    kind carries a placeholder sysex. */
 Command cmd (std::string name, CommandKind kind, int slot = -1)
 {
+    if (kind == CommandKind::Handshake)
+        return {std::move (name), kind, slot, qtn::proto::versionRequestFrame()};
+    if (kind == CommandKind::Read)
+        return {std::move (name), kind, slot, qtn::proto::getOnePreset (0)->bytes};
     return {std::move (name), kind, slot, {0xF0, 0x01, 0xF7}};
 }
 
@@ -355,4 +363,83 @@ TEST_CASE ("short_message_with_read_kind_rejected")
     CHECK (session.submit ({"getOnePreset", CommandKind::Read, -1, {0xB0, 0x3C, 0x05}}) == SendResult::Malformed);
     CHECK (session.submit ({"handshake", CommandKind::Handshake, -1, {0xB0, 0x3C, 0x05}}) == SendResult::Malformed);
     CHECK (transport.sent.empty());
+}
+
+// --- Byte-level cross-check of the Read/Handshake label --------------------------------------
+
+TEST_CASE ("mislabelled_save_frame_as_read_is_malformed")
+{
+    // A `0E` frame (preset save, R3b §3b) labelled as the allowlisted read getOnePreset.
+    FakeTransport transport;
+    DeviceSession session (transport, testAllowlist());
+    Bytes args (1 + qtn::proto::presetSize, 0x00);
+    const Command mislabelled{"getOnePreset", CommandKind::Read, -1, qtn::proto::frame (0x0E, args)};
+
+    CHECK (session.submit (mislabelled) == SendResult::Malformed);
+    CHECK (transport.sent.empty());
+    REQUIRE (session.log().size() == 1);
+    CHECK (session.log()[0].result == SendResult::Malformed);
+}
+
+TEST_CASE ("read_label_on_unknown_sysex_is_malformed")
+{
+    FakeTransport transport;
+    DeviceSession session (transport, testAllowlist());
+    CHECK (session.submit ({"getOnePreset", CommandKind::Read, -1, {0xF0, 0x01, 0xF7}}) == SendResult::Malformed);
+    CHECK (session.submit ({"handshake", CommandKind::Handshake, -1, qtn::proto::frame (0x07, {0x00})}) == SendResult::Malformed);
+    // A version-request type byte with another command byte is not the version request.
+    CHECK (session.submit ({"handshake", CommandKind::Handshake, -1, {0xF0, 0x00, 0x11, 0x22, 0x66, 0x00, 0x00, 0x0E, 0x00, 0xF7}}) == SendResult::Malformed);
+    CHECK (transport.sent.empty());
+}
+
+TEST_CASE ("mislabel_check_comes_before_connection_check")
+{
+    FakeTransport transport (false);
+    DeviceSession session (transport, testAllowlist());
+    CHECK (session.submit ({"getOnePreset", CommandKind::Read, -1, qtn::proto::frame (0x0E, {0x00})}) == SendResult::Malformed);
+}
+
+TEST_CASE ("correctly_labelled_reads_are_sent_before_backup")
+{
+    FakeTransport transport;
+    DeviceSession session (transport, qtn::Allowlist::fromJson (R"(["getVersion", "getGlobleParameter", "getOnePreset", "getCurrentPreset"])"));
+
+    CHECK (session.submit (qtn::proto::getVersion()) == SendResult::Sent);
+    CHECK (session.submit (qtn::proto::getGlobalParameters()) == SendResult::Sent);
+    CHECK (session.submit (*qtn::proto::getOnePreset (71)) == SendResult::Sent);
+    CHECK (session.submit (qtn::proto::getCurrentPreset()) == SendResult::Sent);
+    CHECK (transport.sent.size() == 4);
+}
+
+// --- Scratch slot range and log cap -------------------------------------------------------------
+
+TEST_CASE ("scratch_policy_rejects_slot_out_of_range")
+{
+    Fixture f;
+    f.session.setPolicy (WritePolicy::LiveEditsOnly);
+
+    CHECK_FALSE (f.session.setPolicy (WritePolicy::ScratchSlotOnly, -1));
+    CHECK_FALSE (f.session.setPolicy (WritePolicy::ScratchSlotOnly, 36));
+    CHECK (f.session.policy() == WritePolicy::LiveEditsOnly); // unchanged
+
+    CHECK (f.session.setPolicy (WritePolicy::ScratchSlotOnly, 0));
+    CHECK (f.session.setPolicy (WritePolicy::ScratchSlotOnly, 35));
+    CHECK (f.session.policy() == WritePolicy::ScratchSlotOnly);
+    CHECK (f.session.submit (cmd ("savePreset", CommandKind::SavePreset, 35)) == SendResult::Sent);
+}
+
+TEST_CASE ("log_keeps_only_newest_entries")
+{
+    Fixture f;
+    const auto cap = DeviceSession::maxLogEntries;
+    for (size_t i = 0; i < cap + 5; ++i)
+    {
+        f.clock.ms = static_cast<juce::int64> (i);
+        CHECK (f.session.submit (liveCmd) == SendResult::BlockedByPolicy);
+    }
+
+    const auto& log = f.session.log();
+    REQUIRE (log.size() == cap);
+    CHECK (log.front().at == juce::Time (5));
+    CHECK (log.back().at == juce::Time (static_cast<juce::int64> (cap + 4)));
 }

@@ -170,7 +170,7 @@ TEST_CASE ("connector_replays_capture_end_to_end")
 
     std::optional<qtn::DeviceInfo> info;
     std::vector<juce::String> failures;
-    connector.onConnected = [&] (const qtn::DeviceInfo& i)
+    connector.onConnected = [&] (const qtn::DeviceInfo& i, const juce::File&)
     { info = i; };
     connector.onFailed = [&] (const juce::String& why)
     { failures.push_back (why); };

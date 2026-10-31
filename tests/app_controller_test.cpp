@@ -232,3 +232,54 @@ TEST_CASE ("controller_compare_reports_result_for_latest_backup")
     f.controller.compareWith (f.dir.get().getChildFile ("missing.nuxpreset"));
     CHECK (f.controller.status().compare.startsWith ("Compare failed: "));
 }
+
+// --- The status shows the backup this connection saved (F1) --------------------------------------
+
+namespace
+{
+/** A complete backup in `root` with content no pedal read here produces. */
+juce::File otherBackup (const juce::File& root, juce::Time at, uint8_t content = 0x01)
+{
+    qtn::BackupStore store (root);
+    const auto result = store.save ({{0, "Other", {content, 0x02}}}, at);
+    REQUIRE (result.ok);
+    return result.folder;
+}
+} // namespace
+
+TEST_CASE ("controller_shows_the_backup_it_saved_not_the_newest_name_on_disk")
+{
+    Fixture f;
+    // A backup whose name sorts after this run's (e.g. written with a clock set ahead).
+    const auto future = otherBackup (f.dir.get().getChildFile ("backups"), juce::Time (2030, 0, 1, 0, 0, 0));
+
+    f.plugIn();
+    f.readAll();
+
+    const auto status = f.controller.status();
+    REQUIRE (status.backupFolder.has_value());
+    CHECK (*status.backupFolder != future);
+    CHECK (status.result == "Backup saved: " + status.backupFolder->getFullPathName());
+    CHECK (f.controller.latestBackup() == status.backupFolder);
+
+    // It holds this read: the edit buffer blob is the pedal's "Edit" preset.
+    const auto blobs = qtn::BackupStore (f.dir.get().getChildFile ("backups")).load (*status.backupFolder);
+    REQUIRE (blobs.size() == 74);
+    CHECK (blobs.back().raw == replies::namedPreset ("Edit"));
+}
+
+TEST_CASE ("controller_finds_backup_of_an_earlier_run_once_at_start")
+{
+    TempDir dir;
+    const auto root = dir.get().getChildFile ("backups");
+    const auto earlier = otherBackup (root, juce::Time (2026, 9, 30, 12, 0, 0));
+    FakeTransport transport (false);
+    FakeClock clock;
+    qtn::AppController controller (transport, readAllowlist(), root, clock.fn());
+
+    CHECK (controller.latestBackup() == earlier);
+
+    // Cached: a folder that appears later on disk is not picked up by a rescan.
+    otherBackup (root, juce::Time (2026, 9, 30, 13, 0, 0), 0x03);
+    CHECK (controller.latestBackup() == earlier);
+}

@@ -55,7 +55,7 @@ ExportComparison compareWithExport (const juce::File& backupFolder, const juce::
     SlotBytes fromExport;
     std::array<int, comparedSlots> exportSeen{};
     for (const auto& record : parsed.contents->records)
-        put (fromExport, exportSeen, record.slot, Bytes (record.preset.raw.begin(), record.preset.raw.end()));
+        put (fromExport, exportSeen, record.slot, record.preset.encode());
 
     ExportComparison result;
     for (int slot = 0; slot < comparedSlots; ++slot)

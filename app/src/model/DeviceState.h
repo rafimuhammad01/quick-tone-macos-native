@@ -27,7 +27,8 @@ class DeviceState
     void setGlobalParams (Bytes reply);
 
     [[nodiscard]] const std::optional<Preset>& editBuffer() const noexcept;
-    /** The edit buffer and the slot it came from (raw[8] of the `12` reply). */
+    /** The edit buffer and the slot it came from (raw[8] of the `12` reply); a slot outside
+        0-71 is stored as unknown (-1). */
     void setEditBuffer (const Preset& preset, int currentSlot);
 
     /** -1 until known. */

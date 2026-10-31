@@ -1,6 +1,7 @@
 #include "model/PresetFile.h"
 
 #include <algorithm>
+#include <array>
 
 namespace qtn
 {
@@ -115,7 +116,7 @@ std::optional<PresetRecord> readRecord (Reader& reader, size_t presetSize, std::
         return std::nullopt;
     }
     if (legacy && preset->type (Module::cab) == legacyUserCab)
-        preset->setType (Module::cab, userCab);
+        preset->setType (Module::cab, userCab); // encode() writes the converted value
 
     record.recordVersion = *version;
     record.slot = static_cast<int32_t> (*slot);
@@ -223,6 +224,28 @@ PresetFileReadResult read (std::span<const uint8_t> file)
     default:
         return failure ("unknown data length " + std::to_string (*dataLength));
     }
+}
+
+std::optional<std::string> validateForImport (const PresetFileContents& contents)
+{
+    if (contents.kind == PresetFileKind::single)
+        return std::nullopt;
+
+    constexpr auto lastSlot = static_cast<int32_t> (allPresetsRecordCount) - 1;
+    std::array<bool, allPresetsRecordCount> seen{};
+    for (size_t i = 0; i < contents.records.size(); ++i)
+    {
+        const auto slot = contents.records[i].slot;
+        const auto where = "record " + std::to_string (i) + ": slot " + std::to_string (slot);
+        if (slot < 0 || slot > lastSlot)
+            return where + " is outside 0-" + std::to_string (lastSlot);
+
+        auto& slotSeen = seen[static_cast<size_t> (slot)];
+        if (slotSeen)
+            return where + " appears twice";
+        slotSeen = true;
+    }
+    return std::nullopt;
 }
 
 std::optional<Bytes> writeSingle (const PresetRecord& record)

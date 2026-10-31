@@ -13,6 +13,10 @@ AppController::AppController (Transport& t, Allowlist allowlist, juce::File back
       clock (std::move (c)),
       connector (deviceSession, store, state, clock)
 {
+    // The one disk scan: backups of earlier runs. After that the folder each read saved is kept.
+    if (const auto backups = store.list(); ! backups.empty())
+        lastBackup = backups.front();
+
     // Fixed for this build: only Handshake and Read commands can pass the gate.
     deviceSession.setPolicy (WritePolicy::ReadOnly);
 
@@ -31,12 +35,13 @@ AppController::AppController (Transport& t, Allowlist allowlist, juce::File back
         result = why;
         changed();
     };
-    connector.onConnected = [this] (const DeviceInfo& info)
+    connector.onConnected = [this] (const DeviceInfo& info, const juce::File& savedFolder)
     {
         device = "Firmware " + info.firmware + ", name " + info.name;
-        // The Connector reports success only after its backup was saved: it is the newest one.
-        backupFolder = latestBackup();
-        result = backupFolder.has_value() ? "Backup saved: " + backupFolder->getFullPathName() : juce::String();
+        // The folder that holds this read (a new backup, or the newest one when nothing changed).
+        backupFolder = savedFolder;
+        lastBackup = savedFolder;
+        result = "Backup saved: " + savedFolder.getFullPathName();
         changed();
     };
 }
@@ -96,13 +101,7 @@ StatusModel AppController::status() const
     return s;
 }
 
-std::optional<juce::File> AppController::latestBackup() const
-{
-    const auto backups = store.list();
-    if (backups.empty())
-        return std::nullopt;
-    return backups.front();
-}
+std::optional<juce::File> AppController::latestBackup() const { return lastBackup; }
 
 void AppController::compareWith (const juce::File& nuxpresetFile)
 {

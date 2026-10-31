@@ -145,12 +145,14 @@ struct Fixture
 
     int connectedCount = 0;
     std::optional<qtn::DeviceInfo> info;
+    std::optional<juce::File> savedFolder;
     std::vector<juce::String> failures;
     std::vector<std::pair<int, int>> progress;
 
     /** Replies for the version, the globals and every preset slot; tests may change them. */
     Bytes version = versionReply ("V1.0.6", "MG-300");
     std::vector<Bytes> presets;
+    int editSlot = editIndex;
 
     explicit Fixture (qtn::Allowlist allowlist = readAllowlist())
         : session (transport, std::move (allowlist), clock.fn())
@@ -162,10 +164,11 @@ struct Fixture
         { connector.handleMessage (raw); };
         transport.onConnectionChanged = [this] (bool connected)
         { connector.handleConnectionChanged (connected); };
-        connector.onConnected = [this] (const qtn::DeviceInfo& i)
+        connector.onConnected = [this] (const qtn::DeviceInfo& i, const juce::File& folder)
         {
             ++connectedCount;
             info = i;
+            savedFolder = folder;
         };
         connector.onFailed = [this] (const juce::String& why)
         { failures.push_back (why); };
@@ -182,7 +185,7 @@ struct Fixture
             return globalReply();
         if (sent[7] == 0x07)
             return presetReply (sent[8], presets[sent[8]]);
-        return editReply();
+        return presetMessage (0x12, editSlot, editBytes);
     }
 
     /** Answers the newest request once. */
@@ -446,7 +449,8 @@ TEST_CASE ("reconnect_triggers_handshake_again")
     REQUIRE_FALSE (f.writesBlocked());
 
     f.transport.setConnected (false);
-    f.clock.ms += 2000; // a new backup folder name
+    f.clock.ms += 2000;              // a new backup folder name
+    f.presets[0] = presetBytes (50); // new content, so a new backup is written
     f.transport.setConnected (true);
 
     REQUIRE (f.transport.sent.size() == totalRequests + 1);
@@ -484,7 +488,6 @@ TEST_CASE ("unsolicited_messages_are_ignored")
     f.transport.deliver ({0xC0, 0x05});                                           // program change
     f.transport.deliver ({0xB0, 0x3C, 0x07});                                     // knob/CC
     f.transport.deliver (editReply());                                            // preset changed on pedal
-    f.transport.deliver (presetMessage (0x0E, 3, presetBytes (40)));              // saved on pedal
     f.transport.deliver (presetReply (9, presetBytes (40)));                      // reply for another slot
     f.transport.deliver (versionReply ("X", "Y"));                                // wrong kind
     f.transport.deliver ({0xF0, 0x00, 0x11, 0x22, 0x66, 0x00, 0x70, 0x17, 0xF7}); // garbage
@@ -634,5 +637,98 @@ TEST_CASE ("connect_happy_path_with_real_backup")
         REQUIRE (f.state.preset (slot).has_value());
         CHECK (f.state.preset (slot)->name() == record.preset.name());
     }
+    CHECK_FALSE (f.writesBlocked());
+}
+
+// --- Review fixes (F1) --------------------------------------------------------------------------
+
+TEST_CASE ("pedal_save_during_read_fails_once")
+{
+    // A preset saved on the pedal mid-read may change a slot already read: the backup would not
+    // be one consistent snapshot.
+    Fixture f;
+    f.connector.start();
+    f.answerUntil (5); // waiting for preset slot 3
+    const auto sentBefore = f.transport.sent.size();
+
+    f.transport.deliver (presetMessage (0x0E, 1, presetBytes (40)));
+
+    CHECK (f.failures.size() == 1);
+    CHECK_FALSE (f.connector.isRunning());
+    f.transport.deliver (f.replyTo (f.transport.sent.back())); // late reply
+    f.transport.deliver (presetMessage (0x0E, 1, presetBytes (40)));
+    f.advance (5000);
+    CHECK (f.failures.size() == 1);
+    CHECK (f.transport.sent.size() == sentBefore); // nothing resent
+    CHECK (f.connectedCount == 0);
+    CHECK (f.store.list().empty());
+    CHECK (f.writesBlocked());
+}
+
+TEST_CASE ("pedal_save_while_idle_is_ignored")
+{
+    Fixture f;
+    f.connector.start();
+    f.runToEnd();
+    REQUIRE (f.connectedCount == 1);
+
+    f.transport.deliver (presetMessage (0x0E, 1, presetBytes (40)));
+    CHECK (f.failures.empty());
+    CHECK_FALSE (f.writesBlocked());
+}
+
+TEST_CASE ("edit_buffer_with_slot_out_of_range_fails")
+{
+    Fixture f;
+    f.editSlot = 72;
+    f.connector.start();
+    f.runToEnd();
+
+    CHECK (f.failures.size() == 1);
+    CHECK (f.connectedCount == 0);
+    CHECK (f.store.list().empty());
+    CHECK (f.state.currentSlot() == -1);
+    CHECK (f.writesBlocked());
+}
+
+TEST_CASE ("edit_buffer_with_last_slot_is_accepted")
+{
+    Fixture f;
+    f.editSlot = 71;
+    f.connector.start();
+    f.runToEnd();
+
+    CHECK (f.failures.empty());
+    CHECK (f.state.currentSlot() == 71);
+}
+
+TEST_CASE ("connected_reports_the_saved_backup_folder")
+{
+    Fixture f;
+    f.connector.start();
+    f.runToEnd();
+
+    REQUIRE (f.savedFolder.has_value());
+    const auto backups = f.store.list();
+    REQUIRE (backups.size() == 1);
+    CHECK (*f.savedFolder == backups.front());
+}
+
+TEST_CASE ("unchanged_pedal_reuses_backup_and_marks_done")
+{
+    Fixture f;
+    f.connector.start();
+    f.runToEnd();
+    REQUIRE (f.savedFolder.has_value());
+    const auto first = *f.savedFolder;
+
+    f.transport.setConnected (false);
+    f.clock.ms += 2000;
+    f.transport.setConnected (true);
+    f.runToEnd();
+
+    CHECK (f.connectedCount == 2);
+    CHECK (f.savedFolder == first);
+    CHECK (f.store.list().size() == 1);
     CHECK_FALSE (f.writesBlocked());
 }

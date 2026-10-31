@@ -27,10 +27,18 @@ struct BackupResult
 
 /** Timestamped preset backups on disk.
 
-    Layout: <root>/<YYYY-MM-DDTHH-MM-SS>/slot-NNN.bin plus manifest.json
-    ([{"slot":int,"name":str,"sha256":str}]). A backup is written into <folder>.partial and then
-    renamed, so a folder without a manifest (an interrupted save) is never listed. After a
-    successful save only the newest `keep` backups are kept.
+    Layout: <root>/<YYYY-MM-DDTHH-MM-SS.mmmZ>/slot-NNN.bin plus manifest.json
+    ([{"slot":int,"name":str,"sha256":str}]). The folder name is the save time in UTC with
+    milliseconds. A backup is written into <folder>.partial and then renamed, so a folder without
+    a manifest (an interrupted save) is never listed.
+
+    Only folders named like a backup are backups: the UTC name above or the previous build's
+    local-time "YYYY-MM-DDTHH-MM-SS" (still listed and loaded, ordered by the instant it names).
+    Any other folder in the root is never listed and never deleted.
+
+    A save whose content (slot numbers and per-slot SHA-256) equals the newest intact backup
+    writes nothing and returns that backup. After a save that wrote a new backup, the newest
+    `keep` backups and the oldest one (the first ever taken) are kept; the rest are deleted.
 */
 class BackupStore
 {
@@ -41,7 +49,7 @@ class BackupStore
 
     [[nodiscard]] BackupResult save (const std::vector<PresetBlob>& presets, juce::Time now);
 
-    /** Complete backups, newest first. */
+    /** Complete backups, newest first by the instant in their folder name. */
     [[nodiscard]] std::vector<juce::File> list() const;
 
     /** The presets of one backup, or an empty vector when the manifest or any slot file is
@@ -49,6 +57,7 @@ class BackupStore
     [[nodiscard]] std::vector<PresetBlob> load (const juce::File& folder) const;
 
   private:
+    [[nodiscard]] bool holds (const juce::File& folder, const std::vector<PresetBlob>& presets) const;
     void prune() const;
 
     juce::File root;

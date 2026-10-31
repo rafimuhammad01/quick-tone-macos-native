@@ -52,7 +52,8 @@ class AppController
 
     [[nodiscard]] StatusModel status() const;
 
-    /** The newest complete backup on disk (from this or an earlier run). */
+    /** The backup this run's last successful read saved, else the newest one found on disk
+        when the controller was created. Cached: never rescans the disk. */
     [[nodiscard]] std::optional<juce::File> latestBackup() const;
 
     /** Compares latestBackup() with a QuickTone export; the text lands in status().compare. */
@@ -78,7 +79,8 @@ class AppController
     juce::String progress;
     juce::String result;
     juce::String compare;
-    std::optional<juce::File> backupFolder;
+    std::optional<juce::File> backupFolder; // this connection's backup
+    std::optional<juce::File> lastBackup;   // latestBackup()
 
     JUCE_DECLARE_NON_COPYABLE (AppController)
 };

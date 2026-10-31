@@ -37,7 +37,7 @@ const std::optional<Preset>& DeviceState::editBuffer() const noexcept { return e
 void DeviceState::setEditBuffer (const Preset& newPreset, int currentSlot)
 {
     edit = newPreset;
-    current = currentSlot;
+    current = isValidSlot (currentSlot) ? currentSlot : -1;
     changed();
 }
 

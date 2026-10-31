@@ -278,3 +278,49 @@ TEST_CASE ("real_backup_names_decode")
     // Printed with the run so the decoded names can be reported.
     WARN ("decoded names:" << listing);
 }
+
+// --- Import validation -------------------------------------------------------------------------
+
+namespace
+{
+/** An all-presets file whose record `index` carries `slot` instead of `index`. */
+qtn::PresetFileContents allWithSlot (size_t index, int32_t slot)
+{
+    auto contents = *qtn::PresetFile::read (syntheticAllFile()).contents;
+    contents.records[index].slot = slot;
+    return contents;
+}
+} // namespace
+
+TEST_CASE ("import_validation_accepts_well_formed_all_presets_file")
+{
+    const auto contents = qtn::PresetFile::read (syntheticAllFile()).contents;
+    REQUIRE (contents.has_value());
+    CHECK_FALSE (qtn::PresetFile::validateForImport (*contents).has_value());
+}
+
+TEST_CASE ("import_validation_rejects_slot_out_of_range")
+{
+    const auto negative = qtn::PresetFile::validateForImport (allWithSlot (4, -1));
+    REQUIRE (negative.has_value());
+    CHECK (*negative == "record 4: slot -1 is outside 0-35");
+
+    const auto tooBig = qtn::PresetFile::validateForImport (allWithSlot (35, 36));
+    REQUIRE (tooBig.has_value());
+    CHECK (*tooBig == "record 35: slot 36 is outside 0-35");
+}
+
+TEST_CASE ("import_validation_rejects_duplicate_slot")
+{
+    const auto error = qtn::PresetFile::validateForImport (allWithSlot (7, 6));
+    REQUIRE (error.has_value());
+    CHECK (*error == "record 7: slot 6 appears twice");
+}
+
+TEST_CASE ("import_validation_accepts_single_template_slot")
+{
+    // A single-preset file is imported into the slot the user picks; its slot field is not used.
+    const auto contents = qtn::PresetFile::read (container (syntheticRecord (0xFFFFFFFF, false))).contents;
+    REQUIRE (contents.has_value());
+    CHECK_FALSE (qtn::PresetFile::validateForImport (*contents).has_value());
+}

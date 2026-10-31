@@ -21,7 +21,9 @@ namespace qtn
     - One request at a time, each through DeviceSession::submit. A request the session does not
       send fails the sequence at once.
     - A reply is matched by total length + raw[7] (proto::classify) and, for `07`, by raw[8] ==
-      the requested slot. Anything else is ignored.
+      the requested slot. Anything else is ignored, except a `0E` "preset saved on the pedal",
+      which fails a running sequence once (the read would not be one snapshot). An edit-buffer
+      reply whose current slot raw[8] is outside 0-71 fails the sequence.
     - A request without a reply within `timeoutMs` fails the sequence once. Nothing is ever resent
       (the original resends forever, R3b §7).
     - On success the presets, the global-parameters reply and the edit buffer go into DeviceState
@@ -58,7 +60,8 @@ class Connector
 
     [[nodiscard]] bool isRunning() const noexcept;
 
-    std::function<void (const DeviceInfo&)> onConnected;
+    /** After a successful read and backup: the device and the backup folder that holds this read. */
+    std::function<void (const DeviceInfo&, const juce::File& backupFolder)> onConnected;
     std::function<void (const juce::String&)> onFailed;
     std::function<void (int done, int total)> onProgress;
 

@@ -27,9 +27,10 @@ enum class Module : uint8_t
     mic
 };
 
-/** One 103-byte MG-300 preset (R4 §1). Named fields hold what the layout explains; `raw` keeps
-    every byte as decoded so the unknown ones (00, 0B, 12, 19, 20, 27, 2E, 35, 3C, 63) survive an
-    encode. encode() starts from `raw` and writes the named fields over it. */
+/** One 103-byte MG-300 preset (R4 §1). Named fields hold what the layout explains; a private
+    copy of the decoded bytes keeps the unknown ones (00, 0B, 12, 19, 20, 27, 2E, 35, 3C, 63) so
+    they survive an encode. encode() starts from that copy and writes the named fields over it,
+    so it is the only way to read the bytes and always reflects every edit. */
 struct Preset
 {
     static constexpr size_t size = 103;
@@ -52,8 +53,6 @@ struct Preset
     uint8_t tempoHigh{};                                // 0x64, bpm >> 4
     uint8_t tempoLow{};                                 // 0x65, bpm & 0xF
     uint8_t patchLevel{};                               // 0x66
-
-    std::array<uint8_t, size> raw{};
 
     /** Decodes exactly 103 bytes; any other size gives std::nullopt. */
     [[nodiscard]] static std::optional<Preset> decode (const Bytes& bytes);
@@ -82,5 +81,8 @@ struct Preset
     [[nodiscard]] std::optional<std::string> irName() const;
     /** Encodes `text` (at most 10 symbols from the IR table); false leaves the preset unchanged. */
     [[nodiscard]] bool setIrName (std::string_view text);
+
+  private:
+    std::array<uint8_t, size> raw{};
 };
 } // namespace qtn

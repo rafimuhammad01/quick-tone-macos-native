@@ -47,3 +47,25 @@ TEST_CASE ("queue_ignores_realtime_and_malformed_messages")
 
     CHECK (queue.drain().empty());
 }
+
+TEST_CASE ("queue_drops_oldest_beyond_capacity")
+{
+    qtn::SysexQueue queue (3);
+    for (uint8_t i = 0; i < 5; ++i)
+        CHECK (queue.push (Bytes{0xF0, i, 0xF7}));
+
+    CHECK (queue.drain() == std::vector<Bytes>{{0xF0, 0x02, 0xF7}, {0xF0, 0x03, 0xF7}, {0xF0, 0x04, 0xF7}});
+    CHECK (queue.droppedCount() == 2);
+
+    // Room again after a drain.
+    CHECK (queue.push (Bytes{0xF0, 0x05, 0xF7}));
+    CHECK (queue.drain().size() == 1);
+}
+
+TEST_CASE ("queue_default_capacity_is_bounded")
+{
+    qtn::SysexQueue queue;
+    for (size_t i = 0; i < qtn::SysexQueue::defaultCapacity + 10; ++i)
+        queue.push (Bytes{0xB0, 0x01, 0x02});
+    CHECK (queue.drain().size() == qtn::SysexQueue::defaultCapacity);
+}

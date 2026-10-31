@@ -103,6 +103,11 @@ bool Connector::accept (const Bytes& raw)
 
 void Connector::handleMessage (const Bytes& raw)
 {
+    // A preset saved on the pedal mid-read may change a slot already read, so the backup would
+    // not be one snapshot: fail once (no backup, no resend).
+    if (isRunning() && proto::classify (raw) == proto::ReplyKind::PresetSavedOnPedal)
+        return fail ("A preset was saved on the pedal during the read; reconnect to read again");
+
     if (! accept (raw))
         return;
 
@@ -138,8 +143,13 @@ void Connector::handleMessage (const Bytes& raw)
         if (! data)
             return fail ("Edit buffer reply has invalid data");
 
+        // raw[8] is the current preset index (R3b §3a); anything outside 0-71 is not a slot.
+        const auto current = *proto::presetSlot (raw);
+        if (current < 0 || current >= proto::presetCount)
+            return fail ("Edit buffer reply has invalid current slot " + juce::String (current));
+
         replied();
-        return finish (*data, *proto::presetSlot (raw));
+        return finish (*data, current);
     }
     }
 }
@@ -175,7 +185,7 @@ void Connector::finish (const Bytes& editData, int currentSlot)
     }
 
     if (onConnected)
-        onConnected (*info);
+        onConnected (*info, result.folder);
 }
 
 void Connector::handleConnectionChanged (bool connected)
